@@ -8,7 +8,9 @@
 
 #include <iostream>
 #include "unp.h"
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
 int main(int argc, const char * argv[]) {
     // insert code here...
     int servFD,clientFD;
@@ -23,8 +25,12 @@ int main(int argc, const char * argv[]) {
     servAddr.sin_port = 3999;
     servAddr.sin_addr.s_addr=INADDR_ANY;
     //    inet_pton(AF_INET, INADDR_ANY, &servAddr.sin_addr);
-    bind(servFD, (struct sockaddr*)&servAddr, sizeof(servAddr));
-    listen(servFD, 2);
+    int val = bind(servFD, (struct sockaddr*)&servAddr, sizeof(servAddr));
+    if (val != 0)
+        cout << "Binding errror" << endl;
+    val = listen(servFD, 2);
+    if (val != 0)
+        cout << "Listen Error" << endl;
     cliLen = sizeof(clientAddr);
     clientFD = accept(servFD, (struct sockaddr*) &clientAddr, & cliLen);
     if (clientFD > -1)
